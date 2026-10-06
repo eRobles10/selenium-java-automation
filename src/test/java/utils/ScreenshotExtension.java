@@ -1,7 +1,7 @@
 package utils;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestWatcher;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -11,8 +11,10 @@ import java.io.FileOutputStream;
 import java.util.Optional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import io.qameta.allure.Allure;
+import java.io.ByteArrayInputStream;
 
-public class ScreenshotExtension implements TestWatcher {
+public class ScreenshotExtension implements AfterTestExecutionCallback {
 
     private final Supplier<WebDriver> driverSupplier;
     private final String path;
@@ -23,7 +25,7 @@ public class ScreenshotExtension implements TestWatcher {
     }
 
     @Override
-    public void testFailed(ExtensionContext context, Throwable cause) {
+    public void afterTestExecution(ExtensionContext context){
         try {
 
             WebDriver driver = this.driverSupplier.get();
@@ -47,20 +49,19 @@ public class ScreenshotExtension implements TestWatcher {
             System.out.println("Class: "+context.getRequiredTestClass().getSimpleName());
             System.out.println("Method: "+context.getRequiredTestMethod().getName());
             System.out.println("Display name: "+context.getDisplayName()); 
+            byte[] screenshotParam;
             try (FileOutputStream out = new FileOutputStream(path + "/" + name + ".png")) {
-                out.write(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES));
+                screenshotParam = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                out.write(screenshotParam);
+                System.out.println(
+                    "Allure test activo: " +
+                    Allure.getLifecycle().getCurrentTestCase().isPresent()
+                );
+                Allure.addAttachment(name,"image/png",new ByteArrayInputStream(screenshotParam),".png");
             }
         } catch (Exception e) {
             System.out.println("No se pudo capturar screenshot: " + e.getMessage());
         }
     }
 
-    @Override
-    public void testSuccessful(ExtensionContext context) { }
-
-    @Override
-    public void testAborted(ExtensionContext context, Throwable cause) { }
-
-    @Override
-    public void testDisabled(ExtensionContext context, Optional<String> reason) { }
 }
