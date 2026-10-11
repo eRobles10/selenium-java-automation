@@ -11,18 +11,14 @@ import utils.TestData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals; 
 
-public class LockedUserTest{
+public class LockedUserTest extends BaseTest{
 
-    private WebDriver driver;
     private LoginPage loginPage;
 
-    @BeforeEach
-    public void setUp(){
-        driver = DriverFactory.createDriver();
-        driver.get("https://www.saucedemo.com/");
-        loginPage = new LoginPage(driver);
-
-    }
+   @BeforeEach
+   public void initPageObjects(){
+    loginPage  = new LoginPage(this.driver);
+   }
 
      @Test 
     public void lockedUserCannotLogin(){
@@ -31,15 +27,6 @@ public class LockedUserTest{
         assertEquals("Epic sadface: Sorry, this user has been locked out.", loginPage.getErrorMessage());
         assertEquals("https://www.saucedemo.com/",driver.getCurrentUrl());
 
-    }
-
-   
-
-    @AfterEach
-    public void tearDown(){
-        if(driver !=null){
-            driver.quit();
-        }
     }
 
 

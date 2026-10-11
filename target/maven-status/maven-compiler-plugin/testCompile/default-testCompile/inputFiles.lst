@@ -1,6 +1,6 @@
 /workspaces/selenium-java-automation/src/test/java/tests/LockedUserTest.java
 /workspaces/selenium-java-automation/src/test/java/utils/ScreenshotExtension.java
-/workspaces/selenium-java-automation/src/test/java/tests/GoogleTest.java
+/workspaces/selenium-java-automation/src/test/java/tests/BaseTest.java
 /workspaces/selenium-java-automation/src/test/java/utils/Config.java
 /workspaces/selenium-java-automation/src/test/java/pages/LoginPage.java
 /workspaces/selenium-java-automation/src/test/java/tests/LoginTest.java

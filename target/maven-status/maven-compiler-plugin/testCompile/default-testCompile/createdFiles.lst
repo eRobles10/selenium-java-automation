@@ -1,8 +1,8 @@
 tests/LockedUserTest.class
 tests/LoginTest.class
+tests/BaseTest.class
 pages/LoginPage.class
 utils/TestData.class
-tests/GoogleTest.class
 utils/DriverFactory.class
 utils/ScreenshotExtension.class
 utils/Config.class
